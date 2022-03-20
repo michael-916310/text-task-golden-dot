@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './../../app/hooks';
-import { CurrencyData, fetchData } from './currencySlice';
+import { CurrencyData, fetchData } from './CurrencySlice';
+import { setDetailPage } from '../App/AppSlice';
 import { getKeyFromDate, getLastExistingDate } from './../../app/utils';
 import ReactTooltip from 'react-tooltip';
 
@@ -61,17 +62,20 @@ const CurrencyList = () => {
     dispatch(fetchData());
   }, []);
 
-  console.log('list', list);
-
   return (
     <Main>
       <ReactTooltip />
       <Heading>currency list</Heading>
       {list.map((el) => (
-        <Row key={el.id}>
+        <Row
+          key={el.id}
+          onClick={() => {
+            dispatch(setDetailPage(el.charCode));
+          }}
+        >
           <CodeColumn data-tip={el.name}>{el.charCode}</CodeColumn>
           <ValueColumn>{el.currentValue.toFixed(4)}</ValueColumn>
-          <PercentColumn data-tip={`Вчерашний курс:${el.previousValue}`}>
+          <PercentColumn data-tip={`Курс на вчера:${el.previousValue}`}>
             {(
               ((el.currentValue - el.previousValue) / el.currentValue) *
               100

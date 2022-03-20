@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import type { RootState } from '../../app/store';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { DTODay } from '../../api/dto';
 import { getTodayData } from '../../api/api';
 
@@ -35,7 +34,7 @@ const fetchData = createAsyncThunk(
   }
 );
 
-export const currencySlice = createSlice({
+const currencySlice = createSlice({
   name: 'byDays',
   initialState,
   reducers: {},

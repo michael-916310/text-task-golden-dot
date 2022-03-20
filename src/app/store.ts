@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import currencyReducer from '../components/CurrencyList/currencySlice';
+import currencyReducer from '../components/CurrencyList/CurrencySlice';
+import pageReducer from '../components/App/AppSlice';
 
 const store = configureStore({
   reducer: {
     byDays: currencyReducer,
+    page: pageReducer,
   },
 });
 
