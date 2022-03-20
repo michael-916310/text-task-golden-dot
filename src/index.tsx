@@ -4,12 +4,12 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './app/store';
 
-import CurrencyList from './components/CurrencyList/CurrencyList';
+import App from './components/App.tsx';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <CurrencyList />
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

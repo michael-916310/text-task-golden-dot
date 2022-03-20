@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import type { RootState } from './store';
 import type { DTODay } from './../api/dto';
+import { getTodayData } from './../api/api';
 
 type CurrencyData = {
   id: string;
@@ -23,18 +24,14 @@ const initialState: CurrencySlice = {
 
 const fetchData = createAsyncThunk(
   'currency',
-  async (date: Date): Promise<DTODay> => {
-    const url = `https://www.cbr-xml-daily.ru/archive/${date.getFullYear()}/${
-      date.getMonth() + 1
-    }/${date.getDate()}/daily_json.js`;
+  async (date: Date | undefined): Promise<DTODay> => {
+    let response: Promise<DTODay>;
 
-    const resp = await fetch(url);
-    const result = await resp.json();
-
-    console.log('url', url);
-    console.log('result', result);
-
-    return JSON.parse(result);
+    if (date) {
+      return getTodayData();
+    } else {
+      return getTodayData();
+    }
   }
 );
 
@@ -46,7 +43,7 @@ export const currencySlice = createSlice({
     builder.addCase(fetchData.fulfilled, (state, { payload }) => {
       const key = payload.Date.substring(0, 10);
       const value: Array<CurrencyData> = [];
-      for (let v in Object.keys(payload.Valute)) {
+      for (let v of Object.keys(payload.Valute)) {
         const data = payload.Valute;
         value.push({
           id: data[v].ID,
