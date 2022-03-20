@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import currencyReducer from './currencySlice';
+import currencyReducer from '../components/CurrencyList/currencySlice';
 
 const store = configureStore({
   reducer: {

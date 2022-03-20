@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import type { RootState } from './store';
-import type { DTODay } from './../api/dto';
-import { getTodayData } from './../api/api';
+import type { RootState } from '../../app/store';
+import type { DTODay } from '../../api/dto';
+import { getTodayData } from '../../api/api';
 
 type CurrencyData = {
   id: string;
