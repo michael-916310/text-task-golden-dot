@@ -7,8 +7,8 @@ const CurrencyList = () => {
     useAppSelector((state) => {
       const d = new Date();
       const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-      if (state.byDays.has(key)) {
-        return state.byDays.get(key);
+      if (state.byDays[key]) {
+        return state.byDays[key];
       }
     }) || [];
 
