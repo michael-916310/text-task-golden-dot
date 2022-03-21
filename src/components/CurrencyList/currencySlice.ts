@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { DTODay } from '../../api/dto';
-import { getTodayData } from '../../api/api';
+import { getTodayData, loadDayData } from '../../api/api';
+import { getKeyFromDate } from './../../app/utils';
 
 type CurrencyData = {
   id: string;
@@ -12,24 +13,28 @@ type CurrencyData = {
 };
 
 type CurrencySlice = {
-  status: 'fulfilled' | 'rejected' | 'notInitialized';
   data: Record<string, Array<CurrencyData>>;
 };
 
 const initialState: CurrencySlice = {
-  status: 'notInitialized',
   data: {},
 };
 
-const fetchData = createAsyncThunk(
+const fetchData = createAsyncThunk<Promise<DTODay>, Date | undefined>(
   'currency',
-  async (date: Date | undefined): Promise<DTODay> => {
+  async (date, thunkApi) => {
     let response: Promise<DTODay>;
 
-    if (date) {
-      return getTodayData();
-    } else {
-      return getTodayData();
+    try {
+      return await loadDayData(date);
+    } catch (e) {
+      return thunkApi.rejectWithValue({
+        Date: getKeyFromDate(date || new Date()),
+        PreviousDate: '',
+        PreviousURL: '',
+        Timestamp: '',
+        Valute: {},
+      });
     }
   }
 );
@@ -53,11 +58,11 @@ const currencySlice = createSlice({
           previousValue: data[v].Previous,
         });
       }
-      state.status = 'fulfilled';
       state.data[key] = value;
     });
-    builder.addCase(fetchData.rejected, (state, action) => {
-      state.status = 'rejected';
+    builder.addCase(fetchData.rejected, (state, { payload }) => {
+      // const key = getKeyFromDate(payload.Date);
+      state.data[payload.Date] = [];
     });
   },
 });

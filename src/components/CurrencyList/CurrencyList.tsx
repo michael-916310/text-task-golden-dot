@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './../../app/hooks';
 import { CurrencyData, fetchData } from './CurrencySlice';
 import { setDetailPage } from '../App/AppSlice';
@@ -7,12 +7,6 @@ import ReactTooltip from 'react-tooltip';
 
 import styled from 'styled-components';
 
-const Main = styled.main`
-  margin: 0 auto;
-  max-width: 300px;
-  outline: 1px solid gainsboro;
-`;
-
 const Heading = styled.h1`
   text-align: center;
   font-family: cursive;
@@ -20,6 +14,16 @@ const Heading = styled.h1`
   padding: 10px;
   margin: 0;
 `;
+
+const H3 = styled.h3`
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+
+  background-color: gainsboro;
+  opacity: 0.5;
+`;
+
 const Row = styled.article`
   display: flex;
   font-family: cursive;
@@ -51,8 +55,13 @@ const PercentColumn = styled.div`
 `;
 
 const CurrencyList = () => {
+  const [courseDate, setCourseDate] = useState<Date>(new Date());
+
   const list: Array<CurrencyData> = useAppSelector((state) => {
     const dt = getLastExistingDate(state.byDays.data);
+    if (dt && getKeyFromDate(dt) !== getKeyFromDate(courseDate)) {
+      setCourseDate(dt);
+    }
     return dt ? state.byDays.data[getKeyFromDate(dt)] : [];
   });
 
@@ -63,9 +72,10 @@ const CurrencyList = () => {
   }, []);
 
   return (
-    <Main>
+    <>
       <ReactTooltip />
-      <Heading>currency list</Heading>
+      <Heading>Курс валют</Heading>
+      <H3>на {getKeyFromDate(courseDate)}</H3>
       {list.map((el) => (
         <Row
           key={el.id}
@@ -84,7 +94,7 @@ const CurrencyList = () => {
           </PercentColumn>
         </Row>
       ))}
-    </Main>
+    </>
   );
 };
 

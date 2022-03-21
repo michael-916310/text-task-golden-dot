@@ -17,7 +17,7 @@ const getLastExistingDate = (source: Record<string, any>): Date | null => {
 
   while (!lastDate) {
     const curKey = getKeyFromDate(curDate);
-    if (source[curKey]) {
+    if (source[curKey] && source[curKey].length) {
       lastDate = curDate;
     } else {
       curDate.setDate(curDate.getDate() - 1);
@@ -26,4 +26,14 @@ const getLastExistingDate = (source: Record<string, any>): Date | null => {
   return lastDate;
 };
 
-export { getKeyFromDate, getLastExistingDate };
+const getLast10Days = (baseDate = new Date()) => {
+  const result: Array<Date> = [];
+  for (let i = 0; i < 10; i++) {
+    let curDate: Date = new Date(baseDate);
+    curDate.setDate(curDate.getDate() - i);
+    result.push(curDate);
+  }
+  return result;
+};
+
+export { getKeyFromDate, getLastExistingDate, getLast10Days };
