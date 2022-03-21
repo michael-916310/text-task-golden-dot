@@ -1,14 +1,4 @@
 import { DTODay } from './dto';
-// import { getKeyFromDate } from './../app/utils';
-
-// const getTodayData = async (): Promise<DTODay> => {
-//   const url = 'https://www.cbr-xml-daily.ru/daily_json.js';
-
-//   const resp = await fetch(url);
-//   const data = await resp.json();
-
-//   return data;
-// };
 
 const loadDayData = async (date: Date): Promise<DTODay> => {
   let url = 'https://www.cbr-xml-daily.ru/daily_json.js';

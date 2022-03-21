@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { DTODay } from '../../api/dto';
-import { getTodayData, loadDayData } from '../../api/api';
+import { loadDayData } from '../../api/api';
 import { getKeyFromDate } from './../../app/utils';
 
 type CurrencyData = {

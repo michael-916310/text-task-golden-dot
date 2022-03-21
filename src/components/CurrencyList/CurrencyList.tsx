@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+
 import { useAppDispatch, useAppSelector } from './../../app/hooks';
 import { CurrencyData, fetchData } from './CurrencySlice';
 import { setDetailPage } from '../App/AppSlice';
 import { getKeyFromDate, getLastExistingDate } from './../../app/utils';
 import ReactTooltip from 'react-tooltip';
-
-import styled from 'styled-components';
-
-const Heading = styled.h1`
-  text-align: center;
-  font-family: cursive;
-  background-color: gainsboro;
-  padding: 10px;
-  margin: 0;
-`;
 
 const H3 = styled.h3`
   text-align: center;
@@ -57,6 +49,10 @@ const PercentColumn = styled.div`
 const CurrencyList = () => {
   const [courseDate, setCourseDate] = useState<Date>(new Date());
 
+  const existList: String[] = useAppSelector((state) => {
+    return Object.keys(state.byDays.data);
+  });
+
   const list: Array<CurrencyData> = useAppSelector((state) => {
     const dt = getLastExistingDate(state.byDays.data);
     if (dt && getKeyFromDate(dt) !== getKeyFromDate(courseDate)) {
@@ -68,13 +64,15 @@ const CurrencyList = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchData());
+    const key = getKeyFromDate(courseDate);
+    if (!existList.includes(key)) {
+      dispatch(fetchData());
+    }
   }, []);
 
   return (
     <>
       <ReactTooltip />
-      <Heading>Курс валют</Heading>
       <H3>на {getKeyFromDate(courseDate)}</H3>
       {list.map((el) => (
         <Row
@@ -85,7 +83,7 @@ const CurrencyList = () => {
         >
           <CodeColumn data-tip={el.name}>{el.charCode}</CodeColumn>
           <ValueColumn>{el.currentValue.toFixed(4)}</ValueColumn>
-          <PercentColumn data-tip={`Курс на вчера:${el.previousValue}`}>
+          <PercentColumn data-tip={`Вчерашний курс:${el.previousValue}`}>
             {(
               ((el.currentValue - el.previousValue) / el.currentValue) *
               100

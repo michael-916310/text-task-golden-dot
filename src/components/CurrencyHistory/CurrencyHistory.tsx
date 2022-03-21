@@ -1,7 +1,45 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
+
 import { useAppDispatch, useAppSelector } from './../../app/hooks';
 import { getKeyFromDate, getLast10Days } from './../../app/utils';
 import { CurrencyData, fetchData } from './../CurrencyList/CurrencySlice';
+import { setListPage } from './../App/AppSlice';
+
+const H3 = styled.h3`
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+
+  background-color: gainsboro;
+  opacity: 0.5;
+`;
+
+const H4 = styled.h4`
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+
+  background-color: gainsboro;
+  opacity: 0.3;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const Row = styled.article`
+  display: flex;
+  font-family: cursive;
+  min-height: 24px;
+  justify-content: space-between;
+  padding: 0 10px;
+  &:hover {
+    background-color: gainsboro;
+    opacity: 0.6;
+    cursor: pointer;
+  }
+`;
 
 type Props = {
   currency: string;
@@ -45,11 +83,22 @@ const CurrencyHistory: React.FC<Props> = ({ currency }) => {
   }, []);
 
   return (
-    <div>
+    <>
+      <H3>История {currency}</H3>
+      <H4>
+        <button
+          onClick={() => {
+            dispatch(setListPage());
+          }}
+        >
+          {' '}
+          {'<<'} К списку{' '}
+        </button>
+      </H4>
       {list.map((el) => {
         console.log('el', el);
         return (
-          <div key={el.date.toString()}>
+          <Row key={el.date.toString()}>
             <div>
               {el.date.toLocaleString('ru', {
                 year: 'numeric',
@@ -58,10 +107,10 @@ const CurrencyHistory: React.FC<Props> = ({ currency }) => {
               })}
             </div>
             <div>{el.value ? el.value.toFixed(4) : '-'}</div>
-          </div>
+          </Row>
         );
       })}
-    </div>
+    </>
   );
 };
 

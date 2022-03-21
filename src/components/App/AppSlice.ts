@@ -18,8 +18,12 @@ const slice = createSlice({
       state.activePage = 'detail';
       state.activeCurrency = payload;
     },
+    setListPage: (state) => {
+      state.activePage = 'list';
+      state.activeCurrency = '';
+    },
   },
 });
 
-export const { setDetailPage } = slice.actions;
+export const { setDetailPage, setListPage } = slice.actions;
 export default slice.reducer;
