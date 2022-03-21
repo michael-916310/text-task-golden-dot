@@ -61,7 +61,6 @@ const currencySlice = createSlice({
       state.data[key] = value;
     });
     builder.addCase(fetchData.rejected, (state, { payload }) => {
-      // const key = getKeyFromDate(payload.Date);
       state.data[payload.Date] = [];
     });
   },
